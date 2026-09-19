@@ -6,20 +6,16 @@ const app = express();
 app.use(cors()); 
 app.use(express.json());
 
+// Conexión a la base de datos usando las variables de entorno
 const db = await mysql.createConnection({
-  host: process.env.DB_HOST || 'sql308.infinityfree.com',
-  user: process.env.DB_USER || 'if0_42958233',
-  password: process.env.DB_PASSWORD || 'ebFP4j5dpAy7RR4',
-  database: process.env.DB_NAME || 'if0_38492019_tienda',
-  port: 3306
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306
 });
 
-// Puerto dinámico de la plataforma
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
-
+// Rutas API Clientes
 app.get('/api/clientes', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM clientes');
@@ -66,6 +62,7 @@ app.delete('/api/clientes/:id', async (req, res) => {
   }
 });
 
+// Rutas API Productos
 app.get('/api/productos', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM productos');
@@ -112,6 +109,7 @@ app.delete('/api/productos/:id', async (req, res) => {
   }
 });
 
+// Rutas API Ventas
 app.get('/api/ventas', async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -184,6 +182,8 @@ app.put('/api/ventas/:id/cancelar', async (req, res) => {
   }
 });
 
+// Inicialización del servidor
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
