@@ -1,5 +1,4 @@
-src/components/Productos.jsx
-// Componente Productos
+
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 
