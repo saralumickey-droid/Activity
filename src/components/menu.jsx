@@ -1,4 +1,4 @@
-src/components/menu.jsx
+
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 function Menu() {
