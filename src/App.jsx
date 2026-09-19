@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './src/index.css';
+import "./index.css";
 import Menu from './src/components/menu';
 import Clientes from './src/components/Clientes';
 import Productos from './src/components/Productos';
