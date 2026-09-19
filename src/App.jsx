@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./index.css";
-import Menu from './src/components/menu';
-import Clientes from './src/components/Clientes';
-import Productos from './src/components/Productos';
-import Ventas from './src/components/Ventas';
+import Menu from './components/menu';
+import Clientes from './components/Clientes';
+import Productos from './components/Productos';
+import Ventas from './components/Ventas';
 
 function App() {
   return (
