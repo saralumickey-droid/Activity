@@ -1,0 +1,34 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './src/index.css';
+import Menu from './src/components/menu';
+import Clientes from './src/components/Clientes';
+import Productos from './src/components/Productos';
+import Ventas from './src/components/Ventas';
+
+function App() {
+  return (
+    <>
+      <Menu />
+      <div className="container mt-4 mb-5">
+        <h1 className="text-center mb-4">Panel Principal - Tienda Ej</h1>
+        
+        {}
+        <section className="section-card" id="clientes">
+          <Clientes />
+        </section>
+
+        {}
+        <section className="section-card" id="productos">
+          <Productos />
+        </section>
+
+        {}
+        <section className="section-card" id="ventas">
+          <Ventas />
+        </section>
+      </div>
+    </>
+  );
+}
+
+export default App;
