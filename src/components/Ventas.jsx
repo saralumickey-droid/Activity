@@ -1,4 +1,4 @@
-src/components/Ventas.jsx
+
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Table, Button, Modal, Container, Badge } from 'react-bootstrap';
