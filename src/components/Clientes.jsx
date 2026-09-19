@@ -1,4 +1,3 @@
-src/components/Clientes.jsx
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Table, Button, Modal, Form, Container } from 'react-bootstrap';
