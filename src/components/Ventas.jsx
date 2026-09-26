@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { Table, Button, Modal, Container, Badge } from 'react-bootstrap';
@@ -8,6 +7,7 @@ function Ventas() {
   const [detalles, setDetalles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [ventaSeleccionada, setVentaSeleccionada] = useState(null);
+  const [error, setError] = useState(null);
 
   const cargarVentas = async () => {
     try {
@@ -15,7 +15,7 @@ function Ventas() {
       setVentas(response.data);
     } catch (error) {
       console.error('ERROR VENTAS:', error);
-      res.status(500).json({ error: 'Error al obtener las ventas' });
+      setError('Error al obtener las ventas');
     }
   };
 
@@ -30,6 +30,7 @@ function Ventas() {
       setDetalles(res.data);
       setShowModal(true);
     } catch (error) {
+      console.error('ERROR DETALLE:', error);
       alert('Error al cargar el detalle');
     }
   };
@@ -40,6 +41,7 @@ function Ventas() {
         await api.put(`/ventas/${id}/cancelar`);
         cargarVentas();
       } catch (error) {
+        console.error('ERROR CANCELAR:', error);
         alert('Error al cancelar la venta');
       }
     }
@@ -48,6 +50,13 @@ function Ventas() {
   return (
     <Container className="mt-4">
       <h2>Registro de Ventas</h2>
+
+      {error && (
+        <div className="alert alert-danger mt-3">
+          {error}
+        </div>
+      )}
+
       <Table striped bordered hover responsive className="mt-3">
         <thead>
           <tr>
@@ -59,6 +68,7 @@ function Ventas() {
             <th>Acciones</th>
           </tr>
         </thead>
+
         <tbody>
           {ventas.map((v) => (
             <tr key={v.id_venta}>
@@ -66,17 +76,29 @@ function Ventas() {
               <td>{v.nomCliente}</td>
               <td>{new Date(v.fecha_venta).toLocaleDateString()}</td>
               <td>${Number(v.total).toLocaleString()}</td>
+
               <td>
                 <Badge bg={v.estado === 'Completada' ? 'success' : 'danger'}>
                   {v.estado}
                 </Badge>
               </td>
+
               <td>
-                <Button variant="info" size="sm" className="me-2" onClick={() => verDetalle(v)}>
+                <Button
+                  variant="info"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => verDetalle(v)}
+                >
                   Ver Detalle
                 </Button>
+
                 {v.estado !== 'Cancelada' && (
-                  <Button variant="danger" size="sm" onClick={() => cancelarVenta(v.id_venta)}>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => cancelarVenta(v.id_venta)}
+                  >
                     Anular
                   </Button>
                 )}
@@ -86,13 +108,23 @@ function Ventas() {
         </tbody>
       </Table>
 
-      {/* Modal para ver detalles de la venta */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        size="lg"
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Detalle de Venta #{ventaSeleccionada?.id_venta}</Modal.Title>
+          <Modal.Title>
+            Detalle de Venta #{ventaSeleccionada?.id_venta}
+          </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-          <p><strong>Cliente:</strong> {ventaSeleccionada?.nomCliente}</p>
+          <p>
+            <strong>Cliente:</strong>{' '}
+            {ventaSeleccionada?.nomCliente}
+          </p>
+
           <Table striped bordered>
             <thead>
               <tr>
@@ -102,18 +134,26 @@ function Ventas() {
                 <th>Subtotal</th>
               </tr>
             </thead>
+
             <tbody>
               {detalles.map((d) => (
                 <tr key={d.id_detalle}>
                   <td>{d.nomProducto}</td>
                   <td>{d.cantidad}</td>
-                  <td>${Number(d.precio_unitario).toLocaleString()}</td>
-                  <td>${Number(d.subtotal).toLocaleString()}</td>
+                  <td>
+                    ${Number(d.precio_unitario).toLocaleString()}
+                  </td>
+                  <td>
+                    ${Number(d.subtotal).toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </Table>
-          <h4 className="text-end">Total: ${Number(ventaSeleccionada?.total).toLocaleString()}</h4>
+
+          <h4 className="text-end">
+            Total: ${Number(ventaSeleccionada?.total).toLocaleString()}
+          </h4>
         </Modal.Body>
       </Modal>
     </Container>
