@@ -20,8 +20,9 @@ function Clientes() {
       const response = await api.get('/clientes');
       setClientes(response.data);
     } catch (error) {
-      console.error('Error al cargar clientes', error);
-    }
+  console.error('ERROR CLIENTES:', error);
+  res.status(500).json({ error: 'Error al obtener los clientes' })
+  }
   };
 
   useEffect(() => {
