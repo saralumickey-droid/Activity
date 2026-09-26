@@ -13,12 +13,11 @@ function Productos() {
         setProductos(response.data);
         setCargando(false);
       })
-      .catch(err => {
-        setError('No se pudo cargar la lista de productos');
-        setCargando(false);
-        console.error(err);
-      });
-  }, []);
+      } catch (error) {
+   console.error('ERROR PRODUCTOS:', error);
+   res.status(500).json({ error: 'Error al obtener los productos' });
+   } 
+  []);
 
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p>{error}</p>;
