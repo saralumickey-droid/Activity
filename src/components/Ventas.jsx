@@ -14,7 +14,8 @@ function Ventas() {
       const response = await api.get('/ventas');
       setVentas(response.data);
     } catch (error) {
-      console.error('Error al cargar ventas', error);
+      console.error('ERROR VENTAS:', error);
+      res.status(500).json({ error: 'Error al obtener las ventas' });
     }
   };
 
