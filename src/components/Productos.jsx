@@ -8,16 +8,20 @@ function Productos() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    api.get('/productos')
-      .then(response => {
+    const cargarProductos = async () => {
+      try {
+        const response = await api.get('/productos');
         setProductos(response.data);
-        setCargando(false);
-      })
       } catch (error) {
-   console.error('ERROR PRODUCTOS:', error);
-   res.status(500).json({ error: 'Error al obtener los productos' });
-   } 
-  []);
+        console.error('ERROR PRODUCTOS:', error);
+        setError('Error al obtener los productos');
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarProductos();
+  }, []);
 
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p>{error}</p>;
@@ -25,6 +29,7 @@ function Productos() {
   return (
     <div>
       <h2>Listado de Productos</h2>
+
       <table border="1" cellPadding="8">
         <thead>
           <tr>
@@ -35,7 +40,7 @@ function Productos() {
           </tr>
         </thead>
         <tbody>
-          {productos.map(p => (
+          {productos.map((p) => (
             <tr key={p.id_producto}>
               <td>{p.id_producto}</td>
               <td>{p.nomProducto}</td>
